@@ -1,6 +1,7 @@
 #
 import pytest
 from aspect.standard.engines.Engine import Engine
+from aspect.standard.operations.common.Echo import Echo as EchoOperation
 
 @pytest.fixture
 def engine():
@@ -15,6 +16,15 @@ def test_engine_metadata():
 #
 def test_engine_instantiation(engine):
     assert engine.operation_execution_engine == None
+#
+def test_engine_register(engine):
+    r = engine.register("common.echo", engine)
+    assert r == False and engine.get_operation("common.echo") == engine
+
+def test_engine_new_instance(engine):
+    r = engine.register('common.echo', EchoOperation)
+    r = engine.new_instance("common.echo", args=None)
+    assert type(r) == EchoOperation
 
 #
 def test_engine_execute(engine):
