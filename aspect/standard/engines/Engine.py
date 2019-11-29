@@ -1,5 +1,5 @@
 #
-from aspect.core.engines.Engine import Engine as CoreEngine
+from aspect.core.engines.Engine import Engine as CoreEngine, AspectException
 
 #
 class Engine(CoreEngine):
@@ -28,15 +28,17 @@ class Engine(CoreEngine):
         self.operation_execution_engine = None
 
     #
-    def new_instance(self, operation_name, args):
-        #todo simplify
-        c = self.get_operation(operation_name)
-        r = c()
-        return r
+    def new_instance(self, class_name, **kargs):
+        instance = self.get_operation(class_name)()
+        if (instance == None):
+            raise AspectException('Class not found: ' + class_name)
+        if len(kargs) != 0:
+            Engine.copy_properties(kargs, instance)
+        return instance
 
     #
-    def execute(self, signature, args):
-        return 'echo hello world!'
+    def execute(self, signature, args={}, modifiers=None, interprete=None):
+        return self.new_instance(signature, **args).handle()
 
 #
 Engine.engines['standard'] = Engine()

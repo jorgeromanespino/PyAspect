@@ -1,5 +1,6 @@
 #
 from datetime import datetime
+import copy
 
 #
 class Entity:
@@ -24,3 +25,9 @@ class Entity:
 
     def __hash__(self):
         return self.id
+
+    #
+    @staticmethod
+    def copy_properties(source, target, deep=False):
+        source = source if isinstance(source, dict) else source
+        target.__dict__ = copy.deepcopy(source) if deep else copy.copy(source)    

@@ -5,7 +5,9 @@ from aspect.standard.operations.common.Echo import Echo as EchoOperation
 
 @pytest.fixture
 def engine():
-    return Engine()
+    engine = Engine()
+    engine.register('common.echo', EchoOperation)
+    return engine
 
 def test_engine_metadata():
     assert type(Engine.engines['standard']) == Engine
@@ -19,14 +21,22 @@ def test_engine_instantiation(engine):
 #
 def test_engine_register(engine):
     r = engine.register("common.echo", engine)
-    assert r == False and engine.get_operation("common.echo") == engine
+    assert r and engine.get_operation("common.echo") == engine
 
 def test_engine_new_instance(engine):
-    r = engine.register('common.echo', EchoOperation)
     r = engine.new_instance("common.echo", args=None)
     assert type(r) == EchoOperation
 
+def test_engine_new_instance(engine):
+    r = engine.new_instance("common.echo", args=None)
+    assert type(r) == EchoOperation
+
+
+def test_engine_new_instance_not_exits(engine):
+    with pytest.raises(Exception):
+        engine.new_instance("echo", message="hi!")
+
 #
 def test_engine_execute(engine):
-    r = engine.execute(signature='common.echo', args={'message': 'hello world!'})
+    r = engine.execute(signature='common.echo', args={'message':'hello world!'})
     assert r == 'echo hello world!'
