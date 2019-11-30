@@ -3,9 +3,13 @@ from datetime import datetime
 import copy
 
 #
+class AspectException(BaseException):
+    pass
+
+#
 class Entity:
     # Static properties. Class metadata
-    class meta:
+    class Meta:
         type = 'entity'
         name = 'entity'
         model = {}
@@ -30,4 +34,6 @@ class Entity:
     @staticmethod
     def copy_properties(source, target, deep=False):
         source = source if isinstance(source, dict) else source
-        target.__dict__ = copy.deepcopy(source) if deep else copy.copy(source)    
+        d = copy.deepcopy(source) if deep else copy.copy(source)
+        for k, v in d.items():
+            target.__dict__[k] = v

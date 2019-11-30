@@ -1,5 +1,6 @@
 #
 import copy
+from ..entities.Entity import Entity
 
 #
 class AspectException(BaseException):
@@ -14,8 +15,7 @@ class Engine:
     #
     @staticmethod
     def copy_properties(source, target, deep=False):
-        source = source if isinstance(source, dict) else source
-        target.__dict__ = copy.deepcopy(source) if deep else copy.copy(source)
+        Entity.copy_properties(source, target, deep)
 
     #
     def getOperationImpl(self, args):
@@ -33,7 +33,6 @@ class Engine:
         raise NotImplementedError
 
     #
-    def register(self, clazz):
-        #return this.aqlEngine.registerByName(clazz.meta.name, clazz);
+    def register(metadata, clazz):
         raise NotImplementedError
         

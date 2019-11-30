@@ -1,6 +1,7 @@
 #
 from aspect.core.engines.Engine import Engine as CoreEngine, AspectException
-
+from aspect.core.operations.Operation import Operation as CoreOperation
+from .OperationExecutionEngine import OperationExecutionEngine
 #
 class Engine(CoreEngine):
     #
@@ -10,22 +11,18 @@ class Engine(CoreEngine):
 
     #
     @staticmethod
-    def __register(operation_name, operation_class):
-        existed = operation_name in Engine.registry
-        Engine.registry[operation_name] = operation_class
+    def register(clazz):
+        existed = clazz.Meta.name in Engine.registry
+        Engine.registry[clazz.Meta.name] = clazz
         return existed
-
     #
-    def register(self, operation_name, operation_class):
-        return Engine.__register(operation_name, operation_class)
-
     def get_operation(self, operation_name):
         return Engine.registry[operation_name]
 
     #        
-    def __init__(self, args=None):
-        super().__init__(args)
-        self.operation_execution_engine = None
+    def __init__(self, **kargs):
+        super().__init__(kargs)
+        self.operation_execution_engine = OperationExecutionEngine()
 
     #
     def new_instance(self, class_name, **kargs):
@@ -37,10 +34,10 @@ class Engine(CoreEngine):
         return instance
 
     #
-    def execute(self, signature, args={}, modifiers=None, interprete=None):
-        return self.new_instance(signature, **args).handle()
+    def execute(self, operation, args={}, modifiers=None, interpreter=None):
+        o = operation if isinstance(operation, CoreOperation) else self.new_instance(operation, **args)
+        r = self.operation_execution_engine.executeOperation(runtime_engine=self, operation=o, interpreter=interpreter, args=args, modifiers=modifiers)
+        return o.handle()
 
 #
 Engine.engines['standard'] = Engine()
-
-        

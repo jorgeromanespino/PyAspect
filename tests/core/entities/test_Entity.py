@@ -14,7 +14,7 @@ def new_entity():
 
 #
 def test_entity_metadata():
-    assert Entity.meta.type == 'entity'
+    assert Entity.Meta.type == 'entity'
 
 #
 def test_entity_instantiation(entity):

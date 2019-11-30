@@ -1,0 +1,35 @@
+#
+from ..entities.Entity import AspectException
+from ..operations.Operation import Operation
+#
+class Interpreter(Operation):
+    # Static properties. Class metadata
+    class Meta:
+        name = 'CoreInterpreter'
+        interpreter = None
+    #
+    def __init__(self, **kargs):
+        super().__init__()
+        self.engine = kargs['engine'] if 'engine' in kargs else None
+        self.operation = kargs['operation'] if 'operation' in kargs else None
+        self. interpreter = kargs['interpreter'] if 'interpreter' in kargs else None
+        self.args = kargs['args'] if 'args' in kargs else None
+        self.modifiers = kargs['modifiers'] if 'modifiers' in kargs else None
+    #
+    def init(self):
+        if self.operation == None:
+            raise AspectException('operation is None')
+        if self.engine == None:
+            raise AspectException('engine is None')
+
+    #
+    def execute(self):
+        operation_impl = self.engine.new_instance(self.operation.Meta.signature, **self.args)
+        operation_impl.runtime_interpreter = self
+        Operation.copy_properties(self.args, operation_impl)
+        if isinstance(operation_impl, Interpreter):
+            operation_impl.engine = self.engine
+        #
+        return operation_impl.handle()
+
+

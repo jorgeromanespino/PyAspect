@@ -8,10 +8,6 @@ def operation():
     return Operation()
 
 #
-def test_operation_metadata(operation):
-    assert Operation.meta.type == 'operation'
-
-#
 def test_operation_instantiation(operation):
     assert operation.id == 0 and operation.name == "" \
         and operation.created_by == 'defaultUser' and operation.updated_by == 'defaultUser' \
