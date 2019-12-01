@@ -2,6 +2,9 @@
 from aspect.core.engines.Engine import Engine as CoreEngine, AspectException
 from aspect.core.operations.Operation import Operation as CoreOperation
 from .OperationExecutionEngine import OperationExecutionEngine
+import glob
+import re
+
 #
 class Engine(CoreEngine):
     #
@@ -44,6 +47,18 @@ class Engine(CoreEngine):
         o = operation if isinstance(operation, CoreOperation) else self.new_instance(operation, **args)
         r = self.operation_execution_engine.executeOperation(runtime_engine=self, operation=o, interpreter=interpreter, args=args, modifiers=modifiers)
         return o.handle()
+    
+    #
+    def import_classes(self, path):
+        files = [f for f in glob.glob(path + '/**/*.py', recursive=True)]
+        for file_path in files:
+            file_name = file_path.split('/')[-1]        
+            class_name = re.sub('.py$', '', file_name)
+            module_name = re.sub('.py$', '', file_path)
+            module_name = re.sub('^\.', '', module_name).replace('/','.')
+            module = __import__(module_name, fromlist=[class_name])
+            clazz = getattr(module, class_name)
+            Engine.register(clazz)
 
 #
 Engine.engines['standard'] = Engine()
