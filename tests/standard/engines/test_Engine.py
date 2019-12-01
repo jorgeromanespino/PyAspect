@@ -2,11 +2,12 @@
 import pytest
 from aspect.standard.engines.Engine import Engine
 from aspect.standard.operations.common.Echo import Echo as EchoOperation
+from aspect.standard.operations.common.Ping import Ping as PingOperation
 
 @pytest.fixture
 def engine():
     engine = Engine()
-    engine.register(EchoOperation)
+    Engine.register_operations()
     return engine
 
 def test_engine_metadata():
@@ -35,6 +36,18 @@ def test_engine_new_instance_not_exits(engine):
         engine.new_instance("echo", message="hi!")
 
 #
-def test_engine_execute(engine):
+def test_engine_execute_echo(engine):
     r = engine.execute('common.echo', args={'message':'hello world!'})
     assert r == 'echo hello world!'
+
+def test_engine_execute_ping(engine):
+    r = engine.execute('common.ping')
+    assert r == 'ack'
+
+
+def test_package_loading():
+    # local_namespace, local_name
+    operation = __import__('aspect.standard.operations.common.Ping', fromlist=['Ping'])
+    instance = getattr(operation, 'Ping')()
+    r = instance.execute()
+    assert r == 'ack'

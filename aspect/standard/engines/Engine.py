@@ -15,9 +15,15 @@ class Engine(CoreEngine):
         existed = clazz.Meta.name in Engine.registry
         Engine.registry[clazz.Meta.name] = clazz
         return existed
+
+    #
+    @staticmethod
+    def register_operations():
+        for k, v in CoreOperation.registry.items():
+            Engine.register(v)
     #
     def get_operation(self, operation_name):
-        return Engine.registry[operation_name]
+        return Engine.registry[operation_name] #if operation_name in Engine.registry else None
 
     #        
     def __init__(self, **kargs):
