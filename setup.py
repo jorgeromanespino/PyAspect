@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 #
 setup(
-    name="PyAspect", #,"aspect",
+    name="aspect",
     packages=find_packages(),
     # Needed to silence warnings (and to be a worthwhile package)
     url='https://github.com/jorgeromanespino/PyAspect.git',
