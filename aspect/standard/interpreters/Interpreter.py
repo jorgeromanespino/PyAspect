@@ -7,6 +7,12 @@ class Interpreter(CoreInterpreter):
         name = 'StandardInterpreter'
         signature = "StandardInterpreter.interpret"
         interpreter = None
+
+    #
+    @staticmethod
+    def register(clazz):
+        return CoreInterpreter.register(clazz)     
+
     #
     def __init__(self, **kargs):
         super().__init__(**kargs)

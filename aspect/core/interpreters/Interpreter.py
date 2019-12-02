@@ -6,7 +6,16 @@ class Interpreter(Operation):
     # Static properties. Class metadata
     class Meta:
         name = 'CoreInterpreter'
+        signature = 'core_interpreter.interpret'
         interpreter = None
+        model = {}
+    #
+    @staticmethod
+    def register(clazz):
+        existed = Operation.register(clazz)
+        Interpreter.Meta.model[clazz.Meta.name] = clazz
+        return existed
+
     #
     def __init__(self, **kargs):
         super().__init__()
@@ -31,5 +40,9 @@ class Interpreter(Operation):
             operation_impl.engine = self.engine
         #
         return operation_impl.handle()
+
+    #
+    def exec(self, **kargs):
+        return self.engine.execute(**kargs)        
 
 

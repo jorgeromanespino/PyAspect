@@ -7,14 +7,13 @@ from aspect.standard.operations.common.Ping import Ping as PingOperation
 @pytest.fixture
 def engine():
     engine = Engine()
-    Engine.register_operations()
+    engine.import_classes("aspect/standard/operations/common")
+    engine.import_classes("aspect/standard/interpreters")
     return engine
 
 def test_engine_metadata():
-    assert type(Engine.engines['standard']) == Engine
-    assert type(Engine.engines['standard']).__name__ == 'Engine'
-    assert Engine.engines['standard'].__class__ == Engine
-    assert Engine.engines['standard'].__class__.__name__ == 'Engine'
+    assert Engine.Meta.model['StandardEngine'] == Engine
+    assert Engine.Meta.model['StandardEngine'].__name__ == 'Engine'
 
 #
 def test_engine_instantiation(engine):
@@ -22,12 +21,12 @@ def test_engine_instantiation(engine):
 
 #
 def test_engine_new_instance(engine):
-    r = engine.new_instance("common.echo", args=None)
+    r = engine.new_instance("common.echo")
     assert type(r) == EchoOperation
 
 #
 def test_engine_new_instance(engine):
-    r = engine.new_instance("common.echo", args=None)
+    r = engine.new_instance("common.echo")
     assert type(r) == EchoOperation
 
 #
@@ -52,9 +51,12 @@ def test_package_importing_by_path():
     assert r == 'ack'
 #
 def test_engine_execute_reverse(engine):
-    engine.import_classes("aspect/standard/operations/common")
     r = engine.execute('common.reverse', args={'message':'hello world!'})
     assert r == 'hello world!'[::-1]
+
+def test_engine_execute_exec(engine):
+    r = engine.execute('common.execute', args={'signature':'common.echo', 'args':{'message': 'hi'}})
+    assert r == 'echo hi'
 
 #
 def test_directory_navigation():

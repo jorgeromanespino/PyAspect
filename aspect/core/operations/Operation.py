@@ -2,13 +2,18 @@
 from ..entities.Entity import Entity
 #
 class Operation:
-    #
-    registry = {}
+    # Static properties. Class metadata
+    class Meta:
+        name = 'core_operation.execute'
+        interpreter = None
+        model = {}
+
     #
     @staticmethod
     def register(clazz):
-        existed = clazz.Meta.signature in Operation.registry
-        Operation.registry[clazz.Meta.signature] = clazz
+        clazz.Meta.signature = clazz.Meta.signature if hasattr(clazz.Meta, 'signature') else clazz.Meta.name
+        existed = clazz.Meta.signature in Operation.Meta.model
+        Operation.Meta.model[clazz.Meta.signature] = clazz
         return existed
     #
     @staticmethod
@@ -33,3 +38,7 @@ class Operation:
         self.result = self.execute()
         self.result = self.finish()
         return self.result
+
+    #
+    def exec(self, **kargs):
+        return self.runtime_interpreter.exec(**kargs)

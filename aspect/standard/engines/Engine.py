@@ -7,26 +7,21 @@ import re
 
 #
 class Engine(CoreEngine):
-    #
-    engines = {}
-    #
-    registry = {}
+    # Static metadata
+    class Meta:
+        name = 'StandardEngine'
+        model = {}
 
     #
     @staticmethod
     def register(clazz):
-        existed = clazz.Meta.name in Engine.registry
-        Engine.registry[clazz.Meta.name] = clazz
+        existed = clazz.Meta.name in Engine.Meta.model
+        Engine.Meta.model[clazz.Meta.name] = clazz
         return existed
 
     #
-    @staticmethod
-    def register_operations():
-        for k, v in CoreOperation.registry.items():
-            Engine.register(v)
-    #
     def get_operation(self, operation_name):
-        return Engine.registry[operation_name] #if operation_name in Engine.registry else None
+        return CoreOperation.Meta.model[operation_name]
 
     #        
     def __init__(self, **kargs):
@@ -35,7 +30,7 @@ class Engine(CoreEngine):
 
     #
     def new_instance(self, class_name, **kargs):
-        instance = self.get_operation(class_name)()
+        instance = self.get_operation(class_name)(**kargs)
         if (instance == None):
             raise AspectException('Class not found: ' + class_name)
         if len(kargs) != 0:
@@ -43,11 +38,12 @@ class Engine(CoreEngine):
         return instance
 
     #
-    def execute(self, operation, args={}, modifiers=None, interpreter=None):
+    def execute(self, operation=None, signature=None, args={}, modifiers=None, interpreter=None):
+        operation = operation if signature == None else signature
         o = operation if isinstance(operation, CoreOperation) else self.new_instance(operation, **args)
         r = self.operation_execution_engine.executeOperation(runtime_engine=self, operation=o, interpreter=interpreter, args=args, modifiers=modifiers)
-        return o.handle()
-    
+        return r
+        
     #
     def import_classes(self, path):
         files = [f for f in glob.glob(path + '/**/*.py', recursive=True)]
@@ -55,10 +51,10 @@ class Engine(CoreEngine):
             file_name = file_path.split('/')[-1]        
             class_name = re.sub('.py$', '', file_name)
             module_name = re.sub('.py$', '', file_path)
-            module_name = re.sub('^\.', '', module_name).replace('/','.')
+            module_name = re.sub(r'^\.', '', module_name).replace('/','.')
             module = __import__(module_name, fromlist=[class_name])
             clazz = getattr(module, class_name)
             Engine.register(clazz)
 
 #
-Engine.engines['standard'] = Engine()
+Engine.register(Engine)
