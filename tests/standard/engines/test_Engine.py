@@ -98,6 +98,8 @@ def test_importing_all_files():
     files = [f for f in glob.glob(path + '/**/*.py', recursive=True)]
     for file_path in files:
         file_name = file_path.split('/')[-1]        
+        if file_name == '__init__.py': continue
+        #
         local_namespace = re.sub('.py$', '', file_path)
         local_namespace = re.sub('^\.', '', local_namespace).replace('/','.')
         local_name = re.sub('.py$', '', file_name)

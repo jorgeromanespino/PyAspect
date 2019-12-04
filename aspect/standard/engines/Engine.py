@@ -49,6 +49,8 @@ class Engine(CoreEngine):
         files = [f for f in glob.glob(path + '/**/*.py', recursive=True)]
         for file_path in files:
             file_name = file_path.split('/')[-1]        
+            if file_name == '__init__.py': continue
+            #
             class_name = re.sub('.py$', '', file_name)
             module_name = re.sub('.py$', '', file_path)
             module_name = re.sub(r'^\.', '', module_name).replace('/','.')
