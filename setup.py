@@ -11,7 +11,7 @@ setup(
     # Needed for dependencies
     install_requires=['numpy'],
     # *strongly* suggested for sharing
-    version='0.1.1',
+    version='0.1.2',
     # The license can be anything you like
     license='Apache License 2.0',
     description='Aspect Oriented Design Framework',

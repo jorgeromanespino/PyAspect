@@ -63,19 +63,27 @@ class Engine(CoreEngine):
 
     #
     staticmethod
-    def import_operations(module=None, path=None, recursive=False):
+    def import_operations(module=None, submodule_path=None, path=None, recursive=False):
+        # path = Path(path) if module == None else Path(module.__path__[0] + ('/' + path if path != '' else ''))
+        # module_name_dotted = '.'.join(path.parts)
         if path != None:
             path = Path(path)
             module_name_dotted = '.'.join(path.parts)
         else:
-            path = Path(module.__path__[0])
-            module_name_dotted = module.__name__
+            if submodule_path != None:
+                path = Path(module.__path__[0] + '/' + submodule_path)
+                module_name_dotted = module.__name__ + '.' + '.'.join(Path(submodule_path).parts)
+            else:
+                path = Path(module.__path__[0])
+                module_name_dotted = module.__name__
+        #
         modules = {'packages':{}, 'modules':{}}
         for (loader, module_name, is_pkg) in pkgutil.walk_packages([path]):
             imported_module = import_module(module_name_dotted + '.' + module_name)
             if is_pkg: # Package registration
                 modules['packages'][module_name] = {'module':imported_module}
             else: # Module initialization
+                if not hasattr(imported_module, module_name): continue
                 class_instance = getattr(imported_module, module_name)
                 modules['modules'][module_name_dotted + '.' + module_name] = class_instance
                 instance = class_instance()

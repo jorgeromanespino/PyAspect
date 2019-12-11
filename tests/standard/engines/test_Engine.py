@@ -9,8 +9,8 @@ from aspect.standard.operations.common.Ping import Ping as PingOperation
 @pytest.fixture
 def engine():
     engine = Engine()
-    Engine.import_operations(module=aspect.standard.interpreters, recursive=True)
-    Engine.import_operations(module=aspect.standard.operations, recursive=True)
+    Engine.import_operations(module=aspect, submodule_path='standard/interpreters', recursive=True)
+    Engine.import_operations(module=aspect, submodule_path='standard/operations', recursive=True)
     return engine
 
 def test_engine_metadata():

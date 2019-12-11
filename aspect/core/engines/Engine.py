@@ -18,7 +18,7 @@ class Engine:
         Entity.copy_properties(source, target, deep)
 
     #
-    def getOperationImpl(self, args):
+    def get_operation_impl(self, args):
         #operation = self.getOperation(args);
         #return Engine.newInstance(operation.localFullName, args);
         raise NotImplementedError()
