@@ -2,15 +2,16 @@
 import pytest
 import aspect
 from aspect.standard.engines.Engine import Engine
+import aspect.standard.operations
 from aspect.core.operations.Operation import Operation as CoreOperation
 from aspect.standard.operations.common.Echo import Echo as EchoOperation
-from aspect.standard.operations.common.Ping import Ping as PingOperation
 
 @pytest.fixture
 def engine():
     engine = Engine()
+    # Two ways of importing operations
     Engine.import_operations(module=aspect, submodule_path='standard/interpreters', recursive=True)
-    Engine.import_operations(module=aspect, submodule_path='standard/operations', recursive=True)
+    Engine.import_operations(module=aspect.standard.operations, recursive=True)
     return engine
 
 def test_engine_metadata():
