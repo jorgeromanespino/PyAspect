@@ -11,8 +11,9 @@ class AqlContext:
 
 #
 class AqlEngine:
-    # TODO Refactor to a dictionary
-    DEFAULT_PERSISTANCE_ENGINE = 'sql.sqlite'
+    #
+    DEFAULT_PERSISTANCE_ENGINE = 'default'
+    
     #
     def __init__(self):
         self.symbol_table = SymbolTable()
@@ -31,32 +32,3 @@ class AqlEngine:
         tree = parser.queryExpression()   
         return tree   
 
-    # TODO initialize
-    def initialize(self, persistance_engine):
-        try:
-            pass
-        except expression as identifier:
-            pass
-
-    # TODO clone
-    # TODO translate
-    # TODO generate_code
-    # TODO add_entity_by_query
-    # TODO get_variable
-    # TODO set_variable
-    # TODO get_function
-    # TODO set_function
-    # TODO function_by_query_entity_type
-    # TODO set_function_by_query
-
-    # TODO translate_aspect_filter
-    # TODO generate_code_for_aspect_filter
-
-    # TODO load_context_symbols
-    # TODO build_builtin_types
-    # TODO instance_code_generator_and_interpreter
-    # TODO new_object_by_property_name
-    # TODO check_object_by_name
-    # TODO translate_raw_aql_to_expression
-    # TODO translate_aql_to_expression
-    # TODO translate_aql_filter_to_expression

@@ -1,29 +1,21 @@
 #
-from antlr4 import *
-from aspect.core.languages.aql.AqlLexer import AqlLexer
-from aspect.core.languages.aql.AqlParser import AqlParser
-from aspect.core.languages.aql.AqlVisitor import AqlVisitor
-from aspect.core.languages.aql.SymbolTable import SymbolTable
+from aspect.core.languages.aql.AqlEngine import AqlEngine as CoreAqlEngine
+from aspect.sql.languages.aql.translators.sqlalchemy.Translator import Translator as SqlAlchemyTranslator
 
 #
-class AqlEngine:
+class AqlEngine(CoreAqlEngine):
     #
     def __init__(self):
-        self.symbol_table = SymbolTable()
+        super().__init__()
 
-    #
-    def parse(self, q):
-        input = InputStream(q)
-        lexer = AqlLexer(input)
-        stream = CommonTokenStream(lexer)
-        parser = AqlParser(stream)
-        parser.buildParseTrees = True
-        tree = parser.queryExpression()   
-        return tree   
-
+    # TODO translate
+    def translate(self, ast):
+        new_symbol_table = self.symbol_table.clone()
+        translator = SqlAlchemyTranslator(symbol_table=new_symbol_table)
+        translator.visit(ast)
+        return translator
 
     # TODO clone
-    # TODO translate
     # TODO generate_code
     # TODO add_entity_by_query
     # TODO get_variable
