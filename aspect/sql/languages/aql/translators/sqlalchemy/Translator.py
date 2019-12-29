@@ -2,10 +2,8 @@
 from aspect.core.languages.aql.AqlParser import AqlParser
 from aspect.core.languages.aql.AqlVisitor import AqlVisitor
 from aspect.core.languages.aql.SymbolTable import SymbolTable
-
-# class BoolCommand:
-#     def __init__(self, value):
-#         self.value = value
+#
+from aspect.sql.languages.aql.translators.sqlalchemy.commands.BoolCommand import BoolCommand
 
 #
 class Translator(AqlVisitor):
@@ -30,16 +28,24 @@ class Translator(AqlVisitor):
         self.command = command
         return command
 
-    # TODO
+    #
     def visitQueryExpression(self, ctx:AqlParser.QueryExpressionContext):
         self.visited = True
         return self.visitExpression(ctx.children[0])
 
+    # 
+    def visitExpression(self, ctx:AqlParser.ExpressionContext):
+        return self.visitNavigateExpression(ctx.children[0])
+
     # # TODO
-    # def visitAtomExpression(self, ctx:AqlParser.AtomExpressionContext):
-    #     command = None
-    #     if ctx.children[0].getText() == 'true':
-    #         command = BoolCommand(True)
-    #     else: # FieldList by default
-    #         command = self.visitFieldList(ctx.children[1])
-    #     return selft.setup_command(command, ctx)
+    # def visitNavigateExpression(self, ctx:AqlParser.NavigateExpressionContext):
+    #     return self.visitChildren(ctx)
+
+    # TODO
+    def visitAtomExpression(self, ctx:AqlParser.AtomExpressionContext):
+        command = None
+        if ctx.children[0].getText() == 'true':
+            command = BoolCommand(True)
+            return self.setup_command(command, ctx)
+        else: 
+            return self.visitChildren(ctx)
