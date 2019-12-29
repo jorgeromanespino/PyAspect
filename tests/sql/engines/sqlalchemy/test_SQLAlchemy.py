@@ -1,6 +1,6 @@
 #
 import pytest
-from aspect.sql.entities.Entity import Entity, Base
+from aspect.sqlalchemy.entities.Entity import Entity, Base
 #
 import sqlalchemy
 

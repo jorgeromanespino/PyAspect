@@ -1,7 +1,7 @@
 #
 import pytest
 #
-from aspect.sql.languages.aql.translators.sqlalchemy.Translator import Translator
+from aspect.sqlalchemy.languages.aql.Translator import Translator
 from antlr4 import *
 from aspect.core.languages.aql.AqlLexer import AqlLexer
 from aspect.core.languages.aql.AqlParser import AqlParser

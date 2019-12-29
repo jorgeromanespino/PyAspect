@@ -1,7 +1,7 @@
 #
 import pytest
 #
-from aspect.sql.languages.aql.translators.Command import Command
+from aspect.sqlalchemy.languages.aql.Command import Command
 
 #
 def test_command_instantiation():

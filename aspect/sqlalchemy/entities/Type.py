@@ -1,5 +1,5 @@
 #
-from aspect.sql.entities.Entity import Entity
+from aspect.sqlalchemy.entities.Entity import Entity
 #
 import datetime
 from sqlalchemy import Column, Integer, String, DateTime

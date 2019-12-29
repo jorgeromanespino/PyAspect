@@ -1,6 +1,6 @@
 #
 from aspect.core.languages.aql.AqlEngine import AqlEngine as CoreAqlEngine
-from aspect.sql.languages.aql.translators.sqlalchemy.Translator import Translator as SqlAlchemyTranslator
+from aspect.sqlalchemy.languages.aql.Translator import Translator as SqlAlchemyTranslator
 
 #
 class AqlEngine(CoreAqlEngine):

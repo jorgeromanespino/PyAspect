@@ -1,9 +1,9 @@
 #
 import pytest
 #
-from aspect.sql.languages.aql.AqlEngine import AqlEngine
-from aspect.sql.languages.aql.translators.sqlalchemy.Translator import Translator as SqlAlchemyTranslator
-from aspect.sql.languages.aql.translators.sqlalchemy.commands.BoolCommand import BoolCommand
+from aspect.sqlalchemy.languages.aql.AqlEngine import AqlEngine
+from aspect.sqlalchemy.languages.aql.Translator import Translator as SqlAlchemyTranslator
+from aspect.sqlalchemy.languages.aql.commands.BoolCommand import BoolCommand
 
 #
 def test_SqlAqlEngine_instantiation():

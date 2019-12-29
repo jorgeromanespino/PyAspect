@@ -3,7 +3,7 @@ from aspect.core.languages.aql.AqlParser import AqlParser
 from aspect.core.languages.aql.AqlVisitor import AqlVisitor
 from aspect.core.languages.aql.SymbolTable import SymbolTable
 #
-from aspect.sql.languages.aql.translators.sqlalchemy.commands.BoolCommand import BoolCommand
+from aspect.sqlalchemy.languages.aql.commands.BoolCommand import BoolCommand
 
 #
 class Translator(AqlVisitor):

@@ -1,5 +1,5 @@
 #
-from aspect.sql.languages.aql.translators.Command import Command
+from aspect.sqlalchemy.languages.aql.Command import Command
 
 #
 class BoolCommand(Command):
