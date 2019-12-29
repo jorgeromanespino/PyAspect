@@ -1,8 +1,7 @@
 #
 import pytest
-from aspect.sqlalchemy.entities.Entity import Entity, Base
-#
 import sqlalchemy
+from aspect.sqlalchemy.entities.Entity import Entity, Base
 
 #
 def create_engine_and_session():
@@ -28,6 +27,3 @@ def test_db_connection_write_and_read_entity():
     #
     assert e1_read.name == 'John'
 
-# #
-# def test_db_connection_write_and_read_type():
-#     t1 = Type(id=1)

@@ -1,4 +1,5 @@
 #
+import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base() # Always do this in order to derive subclasses
 #
