@@ -108,3 +108,7 @@ venv.bak/
 
 # vscode
 .vscode
+default.profraw
+=1.1.15
+notes.txt
+.gitignore
