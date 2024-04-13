@@ -5,7 +5,7 @@ from aspect.sqlalchemy.entities.Entity import Entity, Base
 
 #
 def create_engine_and_session():
-    engine = sqlalchemy.create_engine('mysql+pymysql://aspectuserdb:aspectuserpassword2015p@localhost:3306/aspectdb')
+    engine = sqlalchemy.create_engine('mysql+pymysql://pyaspectuserdb:aspectuserpassword2020p@localhost:3306/pyaspectdb')
     Base.metadata.create_all(engine)
     session = sqlalchemy.orm.sessionmaker(bind=engine)()
     return (engine, session)
